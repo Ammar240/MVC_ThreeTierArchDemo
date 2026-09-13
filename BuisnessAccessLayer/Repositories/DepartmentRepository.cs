@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BuisnessAccessLayer.Repositories
 {
-    internal class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : IDepartmentRepository
     {
         private readonly MVCPracticeDBContext _dbContext;
 
@@ -22,27 +22,37 @@ namespace BuisnessAccessLayer.Repositories
         }
         public int Add(Department department)
         {
-            throw new NotImplementedException();
+            _dbContext.Departments.Add(department);
+            return _dbContext.SaveChanges();
         }
 
         public int Delelte(Department department)
         {
-            throw new NotImplementedException();
+            _dbContext.Departments.Remove(department);
+            return _dbContext.SaveChanges();
         }
 
         public Department Get(int id)
         {
-            throw new NotImplementedException();
+            //    var department = (from dept in _dbContext.Departments
+            //                      where dept.Id == id
+            //                      select dept).FirstOrDefault();
+            //    return department;
+            return _dbContext.Departments.Where(D => D.Id == id).FirstOrDefault();
         }
 
         public IEnumerable<Department> GetAll()
         {
-            throw new NotImplementedException();
+            //var department = from dept in _dbContext.Departments
+            //                 select dept;
+            //return department;
+            return _dbContext.Departments.ToList<Department>();
         }
 
         public int Update(Department department)
         {
-            throw new NotImplementedException();
+            _dbContext.Departments.Update(department);
+            return _dbContext.SaveChanges();
         }
     }
 }

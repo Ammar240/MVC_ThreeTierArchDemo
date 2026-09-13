@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BuisnessAccessLayer.Interfaces
 {
-    internal interface IDepartmentRepository
+    public interface IDepartmentRepository
     {
         // Add 5 signature methods
         IEnumerable<Department> GetAll();

@@ -2,6 +2,7 @@ using DataAccessLayer.Contexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BuisnessAccessLayer.Repositories;
+using BuisnessAccessLayer.Interfaces;
 
 namespace PresentationLayer
 {
@@ -25,8 +28,12 @@ namespace PresentationLayer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<MVCPracticeDBContext>(); // when you need object of any repo in DBContext (Department)
-                                                           // -> CLR creates it (inject it into Default constructor of repo)
+            services.AddDbContext<MVCPracticeDBContext>(options =>
+            {
+                options.UseSqlServer("Server =.; Database = MVCPracticeDB; Trusted_Connection = true;");
+            }); // when you need object of any repo in DBContext (Department)
+                // -> CLR creates it (inject it into Default constructor of repo)
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
