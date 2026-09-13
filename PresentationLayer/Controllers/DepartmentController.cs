@@ -33,5 +33,16 @@ namespace PresentationLayer.Controllers
             }
             return View(department);
         }
+
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+                return NotFound();
+            var department = departmentRepository.Get(id);
+            if (department == null)
+                return NotFound();
+            return View(department);
+
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace BuisnessAccessLayer.Interfaces
     {
         // Add 5 signature methods
         IEnumerable<Department> GetAll();
-        Department Get(int id);
+        Department Get(int? id);
         int Add(Department department);
         int Update(Department department);
         int Delelte(Department department);

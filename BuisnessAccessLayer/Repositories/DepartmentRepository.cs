@@ -32,7 +32,7 @@ namespace BuisnessAccessLayer.Repositories
             return _dbContext.SaveChanges();
         }
 
-        public Department Get(int id)
+        public Department Get(int? id)
         {
             //    var department = (from dept in _dbContext.Departments
             //                      where dept.Id == id
