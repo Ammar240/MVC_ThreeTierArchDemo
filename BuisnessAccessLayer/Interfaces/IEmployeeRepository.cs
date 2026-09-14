@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BuisnessAccessLayer.Interfaces
 {
-    internal interface IEmployeeRepository
+    public interface IEmployeeRepository:IGenericRepository<Employee>
     {
-        IEnumerable<Employee> GetAll();
-        Department Get(int? id);
-        int Add(Department employee);
-        int Update(Department department);
-        int Delelte(Department department);
+        //IEnumerable<Employee> GetAll();
+        //Employee Get(int? id);
+        //int Add(Employee employee);
+        //int Update(Employee employee);
+        //int Delelte(Employee employee);
     }
 }

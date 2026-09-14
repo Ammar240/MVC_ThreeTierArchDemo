@@ -34,6 +34,7 @@ namespace PresentationLayer
             }); // when you need object of any repo in DBContext (Department)
                 // -> CLR creates it (inject it into Default constructor of repo)
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

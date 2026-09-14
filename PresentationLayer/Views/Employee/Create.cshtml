@@ -1,0 +1,66 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Add New Employee</h1>
+
+<br />
+<br />
+<form asp-action="Create">
+
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Name"></label>
+        <input class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Address"></label>
+        <input class="form-control" asp-for="Address" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Age"></label>
+        <input class="form-control" asp-for="Age" />
+        <span asp-validation-for="Age" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Salary"></label>
+        <input class="form-control" asp-for="Salary" />
+        <span asp-validation-for="Salary" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Email"></label>
+        <input class="form-control" asp-for="Email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="col-form-label" asp-for="Phone"></label>
+        <input class="form-control" asp-for="Phone" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" asp-for="IsActive" />
+        <label class="form-check-label " asp-for="IsActive"></label>
+        <span asp-validation-for="IsActive" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="col-form-label" asp-for="HireDate"></label>
+        <input class="form-control" asp-for="HireDate" />
+        <span asp-validation-for="HireDate" class="text-danger"></span>
+    </div>
+    <br />
+    <br />
+    <input type="submit" value="submit" class="btn btn-primary" /> |
+    <a asp-controller="Department" asp-action="Index" class="btn btn-light">Back to list</a>
+</form>
+
+@section scriptSection
+{
+    <script src="d:\ammar\mvc_threetierarchdemo\presentationlayer\wwwroot\lib\jquery-validation\dist\additional-methods.min.js"></script>
+    <script src="d:\ammar\mvc_threetierarchdemo\presentationlayer\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js"></script>
+}

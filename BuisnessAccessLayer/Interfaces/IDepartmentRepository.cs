@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace BuisnessAccessLayer.Interfaces
 {
-    public interface IDepartmentRepository
+    public interface IDepartmentRepository:IGenericRepository<Department>
     {
         // Add 5 signature methods
-        IEnumerable<Department> GetAll();
-        Department Get(int? id);
-        int Add(Department department);
-        int Update(Department department);
-        int Delelte(Department department);
+        //IEnumerable<Department> GetAll();
+        //Department Get(int? id);
+        //int Add(Department department);
+        //int Update(Department department);
+        //int Delelte(Department department);
     }
 }
