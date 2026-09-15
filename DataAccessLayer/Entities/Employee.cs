@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace DataAccessLayer.Entities
 
         [RegularExpression(@"^[0-9]{1,10}-[a-zA-Z]{1,40}-[a-zA-Z]{1,40}-[a-zA-Z]{1,40}$",
             ErrorMessage ="Address must be like 123-street-region-city")]
+        
         public string Address { get; set; }
 
         [DataType(DataType.Currency)]
@@ -36,5 +38,9 @@ namespace DataAccessLayer.Entities
         public string Phone { get; set; }
 
         public DateTime HireDate { get; set; } = DateTime.Now;
+
+        
+        public int DepartmentID { get; set; }
+        public virtual Department Department { get; set; } // navigational property
     }
 }

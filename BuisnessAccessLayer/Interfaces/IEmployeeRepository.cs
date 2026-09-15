@@ -13,6 +13,6 @@ namespace BuisnessAccessLayer.Interfaces
         //Employee Get(int? id);
         //int Add(Employee employee);
         //int Update(Employee employee);
-        //int Delelte(Employee employee);
+        //int Delete(Employee employee);
     }
 }

@@ -26,7 +26,7 @@ namespace BuisnessAccessLayer.Repositories
         //    return _dbContext.SaveChanges();
         //}
 
-        //public int Delelte(Employee employee)
+        //public int Delete(Employee employee)
         //{
         //    _dbContext.Employees.Remove(employee);
         //    return _dbContext.SaveChanges();

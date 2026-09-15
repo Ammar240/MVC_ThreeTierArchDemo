@@ -7,35 +7,7 @@
 <h1>Employee Details</h1>
 <div>
   
-    <div class="form-group">
-        <label asp-for="Name" class="col-form-label"></label>
-        <input class="form-control" asp-for="Name" readonly />
-    </div>
-    <div class="form-group">
-        <label asp-for="Address" class="col-form-label"></label>
-        <input class="form-control" asp-for="Address" readonly />
-    </div>
-    <div class="form-group">
-        <label asp-for="Age" class="col-form-label"></label>
-        <input class="form-control" asp-for="Age" readonly />
-    </div>
-    <div class="form-group">
-        <label asp-for="Salary" class="col-form-label"></label>
-        <input class="form-control" asp-for="Salary" readonly />
-    </div>
-    <div class="form-group">
-        <label asp-for="Email" class="col-form-label"></label>
-        <input class="form-control" asp-for="Email" readonly />
-    </div>
-    <div class="form-group">
-        <label asp-for="Phone" class="col-form-label"></label>
-        <input class="form-control" asp-for="Phone" readonly />
-    </div>
-
-    <div class="form-check">
-        <input class="form-check-input" asp-for="IsActive" disabled/>
-        <label class="form-check-label " asp-for="IsActive"></label>
-    </div>
+    <partial name="PartialViews/DeleteDetailsDepartmentPartialView" />
 
     <div>
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a> |

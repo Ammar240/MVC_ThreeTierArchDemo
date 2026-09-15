@@ -9,10 +9,12 @@ namespace PresentationLayer.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository employeeRepository;
+        private readonly IDepartmentRepository departmentRepository;
 
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository)
         {
             this.employeeRepository = employeeRepository;
+            this.departmentRepository = departmentRepository;
         }
 
         public IActionResult Index()
@@ -22,6 +24,7 @@ namespace PresentationLayer.Controllers
 
         public IActionResult Create()
         {
+            ViewBag.Departments = departmentRepository.GetAll();
             return View();
         }
 
@@ -33,6 +36,8 @@ namespace PresentationLayer.Controllers
                 employeeRepository.Add(employee);
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Departments = departmentRepository.GetAll();
+
             return View(employee);
         }
 
@@ -54,31 +59,59 @@ namespace PresentationLayer.Controllers
             //if (employee == null)
             //    return NotFound();
             //return View(employee);
+            ViewBag.Departments = departmentRepository.GetAll();
 
             return Details(id, "Edit");
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Edit([FromRoute] int? id, Employee employee)
+        //{
+        //    if (id != employee.Id)
+        //        return BadRequest();
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            employeeRepository.Update(employee);
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return View(employee);
+
+        //        }
+        //    }
+        //    return View(employee);
+
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit([FromRoute] int? id, Employee employee)
         {
             if (id != employee.Id)
                 return BadRequest();
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     employeeRepository.Update(employee);
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    return View(employee);
+                    ViewBag.Departments = departmentRepository.GetAll();
 
+                    return View(employee);
                 }
             }
-            return View(employee);
 
+            ViewBag.Departments = departmentRepository.GetAll();
+
+            return View(employee);
         }
 
         public IActionResult Delete(int? id)
@@ -93,7 +126,7 @@ namespace PresentationLayer.Controllers
                 return BadRequest();
             try
             {
-                employeeRepository.Delelte(employee);
+                employeeRepository.Delete(employee);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
