@@ -3,6 +3,7 @@ using BuisnessAccessLayer.Repositories;
 using DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Data;
 
 namespace PresentationLayer.Controllers
 {
@@ -16,6 +17,7 @@ namespace PresentationLayer.Controllers
         }
         public IActionResult Index()
         {
+            ViewData["Message"] = "Hellow from DataView";
             return View(departmentRepository.GetAll());
         }
 
@@ -30,6 +32,7 @@ namespace PresentationLayer.Controllers
             if (ModelState.IsValid) //server side validation
             {
                 departmentRepository.Add(department);
+                TempData["Message"] = "Department Created Successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(department);
@@ -92,7 +95,8 @@ namespace PresentationLayer.Controllers
                 return BadRequest();
             try
             {
-                departmentRepository.Delelte(department);
+                departmentRepository.Delete(department);
+                TempData["DelMessage"] = "Department Deleted Succefully!";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)

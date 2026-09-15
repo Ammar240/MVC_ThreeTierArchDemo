@@ -24,7 +24,7 @@ namespace BuisnessAccessLayer.Repositories
             return _dbContext.SaveChanges();
         }
 
-        public int Delelte(T T)
+        public int Delete(T T)
         {
             _dbContext.Set<T>().Remove(T);
             return _dbContext.SaveChanges();

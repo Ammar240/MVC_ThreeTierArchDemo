@@ -13,6 +13,6 @@ namespace BuisnessAccessLayer.Interfaces
         T Get(int? id);
         int Add(T T);
         int Update(T T);
-        int Delelte(T T);
+        int Delete(T T);
     }
 }
