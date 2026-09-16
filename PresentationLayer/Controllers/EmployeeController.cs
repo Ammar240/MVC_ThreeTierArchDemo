@@ -12,14 +12,14 @@ namespace PresentationLayer.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository employeeRepository;
-        private readonly IDepartmentRepository departmentRepository;
+
         private readonly IMapper mapper;
 
-        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository, IMapper mapper)
+        public IUnitOfWork UnitOfWork { get; }
+
+        public EmployeeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this.employeeRepository = employeeRepository;
-            this.departmentRepository = departmentRepository;
+            UnitOfWork = unitOfWork;
             this.mapper = mapper;
         }
 
@@ -28,12 +28,12 @@ namespace PresentationLayer.Controllers
             //Convert from Employee(from DB) to EmployeeViewModel (User View)
             if (string.IsNullOrEmpty(SearchValue))
             {
-                var employees = mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employeeRepository.GetAll());
+                var employees = mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(UnitOfWork.EmployeeRepository.GetAll());
                 return View(employees);
             }
             else
             {
-                var employees = mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employeeRepository.SearchEmployee(SearchValue));
+                var employees = mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(UnitOfWork.EmployeeRepository.SearchEmployee(SearchValue));
                 return View(employees);
 
             }
@@ -41,7 +41,7 @@ namespace PresentationLayer.Controllers
 
         public IActionResult Create()
         {
-            ViewBag.Departments = departmentRepository.GetAll();
+            ViewBag.Departments = UnitOfWork.DepartmentRepository.GetAll();
             return View();
         }
 
@@ -69,10 +69,10 @@ namespace PresentationLayer.Controllers
 
             if (ModelState.IsValid) //server side validation
             {
-                employeeRepository.Add(mappedemployee);
+                UnitOfWork.EmployeeRepository.Add(mappedemployee);
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Departments = departmentRepository.GetAll();
+            ViewBag.Departments = UnitOfWork.DepartmentRepository.GetAll();
 
             return View(employee);
         }
@@ -81,7 +81,7 @@ namespace PresentationLayer.Controllers
         {
             if (id == null)
                 return NotFound();
-            var employee = employeeRepository.Get(id);
+            var employee = UnitOfWork.EmployeeRepository.Get(id);
             if (employee == null)
                 return NotFound();
             var mappedEmployee = mapper.Map<Employee, EmployeeViewModel>(employee);
@@ -96,7 +96,7 @@ namespace PresentationLayer.Controllers
             //if (employee == null)
             //    return NotFound();
             //return View(employee);
-            ViewBag.Departments = departmentRepository.GetAll();
+            ViewBag.Departments = UnitOfWork.DepartmentRepository.GetAll();
 
             return Details(id, "Edit");
         }
@@ -135,19 +135,19 @@ namespace PresentationLayer.Controllers
                 try
                 {
                     var mappedEmployee = mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                    employeeRepository.Update(mappedEmployee);
+                    UnitOfWork.EmployeeRepository.Update(mappedEmployee);
 
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Departments = departmentRepository.GetAll();
+                    ViewBag.Departments = UnitOfWork.DepartmentRepository.GetAll();
 
                     return View(employeeVM);
                 }
             }
 
-            ViewBag.Departments = departmentRepository.GetAll();
+            ViewBag.Departments = UnitOfWork.DepartmentRepository.GetAll();
 
             return View(employeeVM);
         }
@@ -165,7 +165,7 @@ namespace PresentationLayer.Controllers
             try
             {
                 var mappedEmployee = mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                employeeRepository.Delete(mappedEmployee);
+                UnitOfWork.EmployeeRepository.Delete(mappedEmployee);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
