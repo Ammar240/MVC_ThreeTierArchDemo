@@ -11,12 +11,12 @@ namespace DataAccessLayer.Entities
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="Code is Required")]
+        [Required]
         public string  Code { get; set; }
-        [Required(ErrorMessage ="Name is Required")]
-        [MaxLength(50,ErrorMessage ="Name max length is 50 characters")]
+        [Required]
+        [MaxLength(50)]
         public string Name { get; set; }
-        public DateTime DateOFCreation { get; set; }
+        public DateTime DateOFCreation { get; set; } = DateTime.Now;
 
         public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
     }

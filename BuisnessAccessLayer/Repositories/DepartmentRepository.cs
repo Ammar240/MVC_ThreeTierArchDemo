@@ -11,6 +11,7 @@ namespace BuisnessAccessLayer.Repositories
 {
     public class DepartmentRepository :GenericRepository<Department>, IDepartmentRepository
     {
+        private readonly MVCPracticeDBContext context;
         #region Non Generic
         //private readonly MVCPracticeDBContext _dbContext;
 
@@ -59,8 +60,12 @@ namespace BuisnessAccessLayer.Repositories
 
         public DepartmentRepository(MVCPracticeDBContext context):base(context)
         {
-            
+            this.context = context;
         }
 
+        public IEnumerable<Department> SearchDepartment(string value)
+        {
+            return context.Departments.Where(D => D.Name.Contains(value));
+        }
     }
 }

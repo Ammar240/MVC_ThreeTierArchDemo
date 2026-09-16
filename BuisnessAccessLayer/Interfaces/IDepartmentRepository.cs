@@ -15,5 +15,8 @@ namespace BuisnessAccessLayer.Interfaces
         //int Add(Department department);
         //int Update(Department department);
         //int Delete(Department department);
+
+        IEnumerable<Department> SearchDepartment(string value);
+
     }
 }
