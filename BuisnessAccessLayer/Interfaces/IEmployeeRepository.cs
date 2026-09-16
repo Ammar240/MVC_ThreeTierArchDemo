@@ -14,5 +14,7 @@ namespace BuisnessAccessLayer.Interfaces
         //int Add(Employee employee);
         //int Update(Employee employee);
         //int Delete(Employee employee);
+
+        IEnumerable<Employee> SearchEmployee(string value);
     }
 }

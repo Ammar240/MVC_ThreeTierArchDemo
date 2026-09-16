@@ -59,7 +59,14 @@ namespace BuisnessAccessLayer.Repositories
 
         public EmployeeRepository(MVCPracticeDBContext context):base(context)
         {
-            
+            Context = context;
+        }
+
+        public MVCPracticeDBContext Context { get; }
+
+        public IEnumerable<Employee> SearchEmployee(string value)
+        {
+            return Context.Employees.Where(E => E.Name.Contains(value));
         }
     }
 }

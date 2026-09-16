@@ -1,8 +1,12 @@
-﻿using BuisnessAccessLayer.Interfaces;
+﻿using AutoMapper;
+using BuisnessAccessLayer.Interfaces;
 using BuisnessAccessLayer.Repositories;
 using DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using PresentationLayer.Models;
 using System;
+using System.Collections.Generic;
 
 namespace PresentationLayer.Controllers
 {
@@ -10,16 +14,29 @@ namespace PresentationLayer.Controllers
     {
         private readonly IEmployeeRepository employeeRepository;
         private readonly IDepartmentRepository departmentRepository;
+        private readonly IMapper mapper;
 
-        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository)
+        public EmployeeController(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository, IMapper mapper)
         {
             this.employeeRepository = employeeRepository;
             this.departmentRepository = departmentRepository;
+            this.mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string SearchValue)
         {
-            return View(employeeRepository.GetAll());
+            //Convert from Employee(from DB) to EmployeeViewModel (User View)
+            if (string.IsNullOrEmpty(SearchValue))
+            {
+                var employees = mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employeeRepository.GetAll());
+                return View(employees);
+            }
+            else
+            {
+                var employees = mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employeeRepository.SearchEmployee(SearchValue));
+                return View(employees);
+
+            }
         }
 
         public IActionResult Create()
@@ -29,11 +46,30 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(EmployeeViewModel employee)
         {
+            ///Manual mapping
+            ///var mappedEmployee = new Employee
+            ///{
+            ///    Id = employee.Id,
+            ///    Name = employee.Name,
+            ///    Age = employee.Age,
+            ///    Address = employee.Address,
+            ///    IsActive = employee.IsActive,
+            ///    Department = employee.Department,
+            ///    Email = employee.Email,
+            ///    DepartmentID = employee.DepartmentID,
+            ///    Phone = employee.Phone,
+            ///    Salary = employee.Salary,
+            ///    HireDate = employee.HireDate
+            ///};
+
+            var mappedemployee = mapper.Map<EmployeeViewModel, Employee>(employee); // auto mapper
+
+
             if (ModelState.IsValid) //server side validation
             {
-                employeeRepository.Add(employee);
+                employeeRepository.Add(mappedemployee);
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Departments = departmentRepository.GetAll();
@@ -48,7 +84,8 @@ namespace PresentationLayer.Controllers
             var employee = employeeRepository.Get(id);
             if (employee == null)
                 return NotFound();
-            return View(view, employee);
+            var mappedEmployee = mapper.Map<Employee, EmployeeViewModel>(employee);
+            return View(view, mappedEmployee);
 
         }
         public IActionResult Edit(int? id)
@@ -88,16 +125,17 @@ namespace PresentationLayer.Controllers
         //}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int? id, Employee employee)
+        public IActionResult Edit([FromRoute] int? id, EmployeeViewModel employeeVM)
         {
-            if (id != employee.Id)
+            if (id != employeeVM.Id)
                 return BadRequest();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    employeeRepository.Update(employee);
+                    var mappedEmployee = mapper.Map<EmployeeViewModel, Employee>(employeeVM);
+                    employeeRepository.Update(mappedEmployee);
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -105,13 +143,13 @@ namespace PresentationLayer.Controllers
                 {
                     ViewBag.Departments = departmentRepository.GetAll();
 
-                    return View(employee);
+                    return View(employeeVM);
                 }
             }
 
             ViewBag.Departments = departmentRepository.GetAll();
 
-            return View(employee);
+            return View(employeeVM);
         }
 
         public IActionResult Delete(int? id)
@@ -120,18 +158,19 @@ namespace PresentationLayer.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete([FromRoute] int? id, Employee employee)
+        public IActionResult Delete([FromRoute] int? id, EmployeeViewModel employeeVM)
         {
-            if (id != employee.Id)
+            if (id != employeeVM.Id)
                 return BadRequest();
             try
             {
-                employeeRepository.Delete(employee);
+                var mappedEmployee = mapper.Map<EmployeeViewModel, Employee>(employeeVM);
+                employeeRepository.Delete(mappedEmployee);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
             {
-                return View(employee);
+                return View(employeeVM);
             }
         }
     }

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BuisnessAccessLayer.Repositories;
 using BuisnessAccessLayer.Interfaces;
+using PresentationLayer.Mapper;
 
 namespace PresentationLayer
 {
@@ -35,6 +36,8 @@ namespace PresentationLayer
                 // -> CLR creates it (inject it into Default constructor of repo)
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+            services.AddAutoMapper(M => M.AddProfile(new EmployeeProfile()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
